@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Iris - {{ title }}</title>
+        <title>Iris{{ title }}</title>
         <link href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css' rel='stylesheet'>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js'></script>
@@ -9,6 +9,11 @@
       
     </head>
     <body>
+        <script>
+            $(document).ready(function(){
+                $('#{{active}}').addClass('active');
+            });
+        </script>
         <div id="wrapper">
             <div class="ui secondary vertical menu side-bar">
                 <div id="image-div">
@@ -16,16 +21,19 @@
                     <p><span class="not-bold">AUF-MC</p>
                 </div>
     
-                <a class="active item page-section" id="Dashboard">
+                <a class="item page-section" href='/dashboard' id="Dashboard">
                     <i class="left globe icon"></i>Dashboard
                 </a>
-                <a class="item page-section" id="Analyze">
+                <a class="item page-section" href='/add' id="Add">
+                    <i class="left plus icon"></i>Add
+                </a>
+                <a class="item page-section" href='/analyze' id="Analyze">
                     <i class="left search icon"></i>Analyze
                 </a>
-                <a class="item page-section" id="Send">
+                <a class="item page-section" href='/send' id="Send">
                     <i class="left envelope icon"></i>Send
                 </a>
-                <a class="item page-section" id="View">
+                <a class="item page-section" href='/view' id="View">
                     <i class="left clipboard icon"></i>View
                 </a>
                 <a class="item">
@@ -67,7 +75,7 @@
             .side-bar.ui.secondary.vertical.menu > .item {
                 border-radius: 18px !important;
                 padding: 15px !important;
-                margin: 0 0 25px 0 !important;
+                margin: 0 0 20px 0 !important;
             }
     
             .side-bar.ui.secondary.vertical.menu > a {

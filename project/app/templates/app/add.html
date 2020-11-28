@@ -1,0 +1,46 @@
+{% extends 'app/app-base.html' %}
+{% block content %}
+<h1>Add Patient</h1>
+<div class='ui form segment'>
+	<div class='ui three fields'>
+		<div class='field'>
+			<label>Last name</label>
+			<input placeholder="Last name">
+    </div>
+    <div class='field'>
+			<label>First name</label>
+			<input placeholder="First name">
+    </div>
+    <div class='field'>
+			<label>Middle name</label>
+			<input placeholder="Middle name">
+		</div>
+  </div>
+  
+  <div class='ui two fields'>
+		<div class='field'>
+			<label>Contact number</label>
+			<input placeholder="Contact number">
+    </div>
+    <div class='field'>
+			<label>Email address</label>
+			<input placeholder="Email address">
+    </div>
+	</div>
+
+
+	<div class='ui field'>
+		<button type="button" class="ui green button"><i class='plus icon'></i>Add</button>
+	</div>
+
+
+</div>
+
+<script>
+	$(document).ready(function(){
+		$('.dropdown').dropdown();
+	});
+</script>
+
+
+{% endblock %}
