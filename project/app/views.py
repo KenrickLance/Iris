@@ -2,16 +2,16 @@ from django.shortcuts import render
 
 
 def login(request):
-	pass
+	return render(request, 'app/login.html', {})
 
 def home(request):
-	pass
+	return render(request, 'app/home.html', {})
 
-def scan(request):
-	pass
+def send(request):
+	return render(request, 'app/send.html', {'title':'Send Results'})
 
 def analyze(request):
-	pass
+	return render(request, 'app/analyze.html', {})
 
-def view(request, patient_id):
-	pass
+def view(request):
+	return render(request, 'app/view.html', {})

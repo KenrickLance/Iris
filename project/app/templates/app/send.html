@@ -1,5 +1,73 @@
 {% extends 'app/app-base.html' %}
-
 {% block content %}
+<div class='ui form'>
+	<div class='ui two fields'>
+		<div class='field'>
+			<label>Patient name</label>
+			<div class="ui search selection dropdown">
+				<input type="hidden" name="patient">
+				<i class="dropdown icon"></i>
+				<div class="default text">Patient name</div>
+				<div class="menu">
+					<div class="item" data-value="1">Male</div>
+					<div class="item" data-value="0">Female</div>
+				</div>
+			</div>
+		</div>
+		<div class='field'>
+			<label>Assigned doctor</label>
+			<div class="ui search selection dropdown">
+				<input type="hidden" name="patient">
+				<i class="dropdown icon"></i>
+				<div class="default text">Assigned doctor</div>
+				<div class="menu">
+					<div class="item" data-value="1">Male</div>
+					<div class="item" data-value="0">Female</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
+	<div class='ui two fields'>
+		<div class='field'>
+			<label>Result type</label>
+			<div class="ui search selection dropdown">
+				<input type="hidden" name="patient">
+				<i class="dropdown icon"></i>
+				<div class="default text">Result type</div>
+				<div class="menu">
+					<div class="item" data-value="1">Male</div>
+					<div class="item" data-value="0">Female</div>
+				</div>
+			</div>
+		</div>
+		<div class='field'>
+			<label>Upload file</label>
+			<input type="file">
+		</div>
+	</div>
+
+	<div class='ui field'>
+		<div class='field'>
+			<label>Notes</label>
+			<textarea></textarea>
+		</div>
+	</div>
+
+	<div class='ui field'>
+		<button type="button" class="ui blue button">Send</button>
+	</div>
+
+
+</div>
+
+<script>
+	$(document).ready(function(){
+		$('.dropdown').dropdown();
+	});
+</script>
+
+<style>
+	
+</style>
 {% endblock %}
