@@ -1,5 +1,22 @@
 {% extends 'app/app-base.html' %}
 
 {% block content %}
-
+PATIENTS
+	<ul>
+	{% for patient in patients %}
+		<li>{{ patient }}{{ patient.id }}</li>
+	{% endfor %}
+	</ul>
+	RECORDS
+	<ul>
+	{% for record in records %}
+		<li>{{ record }}{{ record.id }}</li>
+	{% endfor %}
+	</ul>
+	<ul>
+	DOCTORS
+	{% for doctors in doctors %}
+		<li>{{ doctors }}{{ doctors.id }}</li>
+	{% endfor %}
+	</ul>
 {% endblock %}
