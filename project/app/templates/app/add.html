@@ -1,46 +1,45 @@
 {% extends 'app/app-base.html' %}
 {% block content %}
 <h1>Add Patient</h1>
-<div class='ui form segment'>
+<form class="ui form segment" action="/add" method="post">
+	{% csrf_token %}
 	<div class='ui three fields'>
 		<div class='field'>
-			<label>Last name</label>
-			<input placeholder="Last name">
-    </div>
-    <div class='field'>
-			<label>First name</label>
-			<input placeholder="First name">
-    </div>
-    <div class='field'>
-			<label>Middle name</label>
-			<input placeholder="Middle name">
+			{{ form.lastname.label }}
+			{{ form.lastname }}
 		</div>
-  </div>
-  
-  <div class='ui two fields'>
 		<div class='field'>
-			<label>Contact number</label>
-			<input placeholder="Contact number">
-    </div>
-    <div class='field'>
-			<label>Email address</label>
-			<input placeholder="Email address">
-    </div>
+			{{ form.firstname.label }}
+			{{ form.firstname }}
+		</div>
+		<div class='field'>
+			{{ form.middlename.label }}
+			{{ form.middlename }}
+		</div>
+	</div>
+	<div class='ui two fields'>
+		<div class='field'>
+			{{ form.phone.label }}
+			{{ form.phone }}
+		</div>
+		<div class='field'>
+			{{ form.email.label }}
+			{{ form.email }}
+		</div>
 	</div>
 
 
 	<div class='ui field'>
-		<button type="button" class="ui green button"><i class='plus icon'></i>Add</button>
+		<button type="submit" class="ui green button"><i class='plus icon'></i>Add</button>
 	</div>
 
 
-</div>
+</form>
 
 <script>
 	$(document).ready(function(){
 		$('.dropdown').dropdown();
 	});
 </script>
-
 
 {% endblock %}

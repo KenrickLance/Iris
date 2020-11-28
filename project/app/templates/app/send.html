@@ -1,72 +1,50 @@
 {% extends 'app/app-base.html' %}
 {% block content %}
 <h1>Send Results</h1>
-<div class='ui form segment'>
+<form class="ui form segment" action="/send" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
 	<div class='ui two fields'>
 		<div class='field'>
-			<label>Patient name</label>
-			<div class="ui search selection dropdown">
-				<input type="hidden" name="patient">
-				<i class="dropdown icon"></i>
-				<div class="default text">Patient name</div>
-				<div class="menu">
-					<div class="item" data-value="1">Male</div>
-					<div class="item" data-value="0">Female</div>
-				</div>
-			</div>
+			{{ form.patient.label }}
+			{{ form.patient }}
 		</div>
 		<div class='field'>
-			<label>Assigned doctor</label>
-			<div class="ui search selection dropdown">
-				<input type="hidden" name="patient">
-				<i class="dropdown icon"></i>
-				<div class="default text">Assigned doctor</div>
-				<div class="menu">
-					<div class="item" data-value="1">Male</div>
-					<div class="item" data-value="0">Female</div>
-				</div>
-			</div>
+			{{ form.doctor.label }}
+			{{ form.doctor }}
 		</div>
 	</div>
 
-	<div class='ui two fields'>
+	<div class='ui three fields'>
 		<div class='field'>
-			<label>Result type</label>
-			<div class="ui search selection dropdown">
-				<input type="hidden" name="patient">
-				<i class="dropdown icon"></i>
-				<div class="default text">Result type</div>
-				<div class="menu">
-					<div class="item" data-value="1">Male</div>
-					<div class="item" data-value="0">Female</div>
-				</div>
-			</div>
+			{{ form.test.label }}
+			{{ form.test }}
 		</div>
 		<div class='field'>
-			<label>Upload file</label>
-			<input type="file">
+			{{ form.result.label }}
+			{{ form.result }}
+		</div>
+		<div class='field'>
+			{{ form.file.label }}
+			{{ form.file }}
 		</div>
 	</div>
 
 	<div class='ui field'>
 		<div class='field'>
-			<label>Notes</label>
-			<textarea></textarea>
+			{{ form.notes.label}}
+			{{ form.notes }}
 		</div>
 	</div>
 
 	<div class='ui field'>
-		<button type="button" class="ui blue button"><i class='paper plane icon'></i>Send</button>
+		<button type="submit" class="ui blue button"><i class='paper plane icon'></i>Send</button>
 	</div>
-
-
-</div>
+</form>
 
 <script>
 	$(document).ready(function(){
 		$('.dropdown').dropdown();
 	});
 </script>
-
 
 {% endblock %}
