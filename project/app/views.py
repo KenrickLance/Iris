@@ -152,8 +152,8 @@ class api_user(viewsets.ModelViewSet):
 
 class api_login(APIView):
 	def post(self, request, format=None):
-		username = request.POST.get('username', None)
-		password = request.POST.get('password', None)
+		username = request.data.get('username', None)
+		password = request.data.get('password', None)
 		user = authenticate(username=username, password=password)
 		if user:
 			authenticated = 1
