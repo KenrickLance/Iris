@@ -84,6 +84,7 @@ def send(request):
 	else:
 		print(request.user.id)
 		form = SendResultsForm(user_id=request.user.id)
+
 	print(settings.BASE_DIR)
 	return render(request, 'app/send.html', {'title':' - Send Result', 'active':'Send', 'form':form})
 
