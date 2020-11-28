@@ -22,7 +22,7 @@ def login(request):
 		user = authenticate(request, username=username, password=password)
 		if user is not None:
 			login_auth(request, user)
-			return redirect('/home')
+			return redirect('/dashboard')
 		else:
 			form = AuthenticationForm(request.POST)
 			return render(request, 'app/login.html', {'form': form})
@@ -30,26 +30,27 @@ def login(request):
 		form = AuthenticationForm()
 		return render(request, 'app/login.html', {'form': form})
 
-def dashboard(request):
-	return render(request, 'app/dashboard.html', {'title':' - Dashboard','active':'Dashboard'})
-	
 def logout(request):
 	logout_auth(request)
 	return redirect('/login')
 
 @login_required
-def home(request):
-	return render(request, 'app/home.html', {})
+def dashboard(request):
+	return render(request, 'app/dashboard.html', {'title':' - Dashboard','active':'Dashboard'})
 
+@login_required
 def send(request):
 	return render(request, 'app/send.html', {'title':' - Send Results','active':'Send'})
 
+@login_required
 def analyze(request):
 	return render(request, 'app/analyze.html', {'title':' - Analyze CT Scan','active':'Analyze'})
 
+@login_required
 def view(request):
 	return render(request, 'app/view.html', {'title':' - View Records','active':'View'})
 
+@login_required
 def add(request):
 	return render(request, 'app/add.html', {'title':' - Add Patient','active':'Add'})
 
