@@ -13,8 +13,14 @@ class Patient(models.Model):
     firstname = models.CharField(max_length=100)
     middlename = models.CharField(max_length=100)
     phone = models.CharField(max_length=20)
-    email = EmailField()
+    email = models.EmailField()
 
+class Doctor(models.Model):
+	hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
+	lastname = models.CharField(max_length=100)
+	firstname = models.CharField(max_length=100)
+	middlename = models.CharField(max_length=100)
+	
 class Record(models.Model):
 	patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
 	doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
@@ -24,8 +30,4 @@ class Record(models.Model):
 	result = models.CharField(max_length=100)
 	time = models.DateTimeField()
 
-class Doctor(models.Model):
-	hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
-	lastname = models.CharField(max_length=100)
-	firstname = models.CharField(max_length=100)
-	middlename = models.CharField(max_length=100)
+
