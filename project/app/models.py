@@ -1,13 +1,9 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.contrib.auth.models import User
 
 def make_file_path_name(instance, filename):
 	return f'patient{instance.patient.id}/{filename}'
-
-class Hospital(models.Model):
-	name = models.CharField(max_length=100)
-	username = models.CharField(max_length=100)
-	password = models.CharField(max_length=32)
 
 class Patient(models.Model):
 	lastname = models.CharField(max_length=100)
@@ -17,7 +13,7 @@ class Patient(models.Model):
 	email = models.EmailField()
 
 class Doctor(models.Model):
-	hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	lastname = models.CharField(max_length=100)
 	firstname = models.CharField(max_length=100)
 	middlename = models.CharField(max_length=100)

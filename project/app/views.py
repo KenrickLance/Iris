@@ -1,11 +1,41 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as login_auth
+from django.contrib.auth import logout as logout_auth
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.contrib.auth.forms import AuthenticationForm
+from django.conf.urls import url
+from django.contrib import admin
+from django.contrib.auth import views as auth_views
 
+
+from .forms import LoginForm
+
+def login(request):
+	print(type(request))
+	if request.user.is_authenticated:
+		return render(request, 'app/home.html')
+	if request.method == 'POST':
+		username = request.POST['username']
+		password = request.POST['password']
+		user = authenticate(request, username=username, password=password)
+		if user is not None:
+			login_auth(request, user)
+			return redirect('/home')
+		else:
+			form = AuthenticationForm(request.POST)
+			return render(request, 'app/login.html', {'form': form})
+	else:
+		form = AuthenticationForm()
+		return render(request, 'app/login.html', {'form': form})
+
+def logout(request):
+	logout_auth(request)
+	return redirect('/login')
 
 @login_required
-def login(request):
-	return render(request, 'app/login.html', {})
-
 def home(request):
 	return render(request, 'app/home.html', {})
 
