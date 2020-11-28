@@ -10,10 +10,12 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-
+from django.conf import settings
 
 from .models import Patient, Doctor, Record
 from .forms import AddPatientForm, SendResultsForm
+
+from .functions import send_sms, send_email, generate_pdf_password, encrypt_pdf
 
 def login(request):
 	if request.user.is_authenticated:
@@ -43,7 +45,7 @@ def dashboard(request):
 @login_required
 def send(request):
 	if request.method == 'POST':
-		form = SendResultsForm(request.POST, request.FILES)
+		form = SendResultsForm(request.POST, request.FILES, user_id=request.user.id)
 		print(form.is_valid())
 		print(form.errors)
 		if form.is_valid():
@@ -58,10 +60,15 @@ def send(request):
 			time = timezone.now()
 			new_record = Record(patient=patient, doctor=doctor, test=test, result=result, file_path=file, notes=notes, time=time)
 			new_record.save()
+			absolute_file_path = f'{settings.BASE_DIR}{settings.MEDIA_URL}{new_record.file_path}'
+			print(absolute_file_path)
+			encrypt_pdf(absolute_file_path, '1234')
+
 			return HttpResponseRedirect('/view')
 	else:
-		form = SendResultsForm()
-
+		print(request.user.id)
+		form = SendResultsForm(user_id=request.user.id)
+	print(settings.BASE_DIR)
 	return render(request, 'app/send.html', {'title':' - Send Results', 'active':'Send', 'form':form})
 
 @login_required
