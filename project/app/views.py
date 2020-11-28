@@ -4,13 +4,16 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_auth
 from django.contrib.auth import logout as logout_auth
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,HttpResponse, Http404
 from django.urls import reverse
 from django.contrib.auth.forms import AuthenticationForm
 from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.conf import settings
+import os
+from django.http import HttpResponse, Http404
+
 
 from .models import Patient, Doctor, Record
 from .forms import AddPatientForm, SendResultsForm
@@ -54,8 +57,6 @@ def dashboard(request):
 def send(request):
 	if request.method == 'POST':
 		form = SendResultsForm(request.POST, request.FILES, user_id=request.user.id)
-		print(form.is_valid())
-		print(form.errors)
 		if form.is_valid():
 			patient_id = request.POST['patient']
 			patient = Patient.objects.get(pk=patient_id)
@@ -69,9 +70,16 @@ def send(request):
 			new_record = Record(patient=patient, doctor=doctor, test=test, result=result, file_path=file, notes=notes, time=time)
 			new_record.save()
 			absolute_file_path = f'{settings.BASE_DIR}{settings.MEDIA_URL}{new_record.file_path}'
-			print(absolute_file_path)
-			encrypt_pdf(absolute_file_path, '1234')
 
+			pdf_pword = generate_pdf_password()
+			encrypt_pdf(absolute_file_path, pdf_pword)
+			dl_link = f'/download?path=media/{new_record.file_path}'
+			notif_sms = f'Hi Mr./Ms. {patient.lastname}! Your result for your {test} is now ready, kindly visit the download link for your convenient access. Thank you!\n\nDownload link: {dl_link}\n\nPDF password: {pdf_pword}\n\nNotes: {notes}'
+			
+			notif_email = f'Hi Mr./Ms. <b>{patient.lastname}</b>! Your result for your <b>{test}</b> is now ready.<br><br>Click <a href="{dl_link}"><b><u>here</u></b></a> to download your password-protected file.<br><br><b>PDF password:</b> {pdf_pword}<br><br><b>Notes:</b> {notes}'
+			print(patient.phone)
+			send_sms(patient.phone,notif_sms,request.user.username)
+			send_email(patient.email,notif_email)
 			return HttpResponseRedirect('/view')
 	else:
 		print(request.user.id)
@@ -113,6 +121,19 @@ def add(request):
 
 	return render(request, 'app/add.html', {'title':' - Add Patient', 'active':'Add', 'form':form})
 
+def download(request):
+	path = request.GET['path']
+	return render(request, 'app/download.html', {'title':' - Add Patient', 'path':path})
+
+def get_file(request):
+	file_path = request.GET['path']
+	if os.path.exists(file_path):
+			with open(file_path, 'rb') as fh:
+					response = HttpResponse(fh.read(), content_type="application/pdf")
+					response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+					return response
+	raise Http404
+	
 class api_view_patient(viewsets.ModelViewSet):
 	def get_queryset(self):
 		user_id = self.request.query_params.get('user_id', None)
