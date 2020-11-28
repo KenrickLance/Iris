@@ -1,3 +1,17 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def login(request):
+	pass
+
+def home(request):
+	pass
+
+def scan(request):
+	pass
+
+def analyze(request):
+	pass
+
+def view(request, patient_id):
+	pass
