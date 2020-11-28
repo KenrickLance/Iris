@@ -6,7 +6,6 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js'></script>
         <link href='https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap' rel='stylesheet'>
-    <link href='https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap' rel='stylesheet'>
       
     </head>
     <body>
@@ -19,7 +18,7 @@
             <div class="ui secondary vertical menu side-bar">
                 <div id="image-div">
                     <img src="{% static '/app/logo_comp.png' %}" />
-                    <p><span>AUF-MC</p>
+                    <p><span>{{user.username}}</p>
                 </div>
     
                 <a class="item page-section" href='/dashboard' id="Dashboard">
@@ -53,8 +52,12 @@
 
 
         <style>
-            h1, label {
+            h1,h2, label {
                 color: #3d4676 !important;
+            }
+
+            textarea {
+                resize: none !important;
             }
 
             .segment {
@@ -62,7 +65,7 @@
                 background-color: #ffffff !important;
                 box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048) !important;
                 border: none !important;
-                padding: 40px !important;
+                padding: 40px 40px 80px 40px !important;
             }
 
             *:not(i) {

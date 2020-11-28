@@ -1,6 +1,6 @@
 {% extends 'app/app-base.html' %}
 {% block content %}
-<h1>Send Results</h1>
+<h1>Send Result</h1>
 <form class="ui form segment" action="/send" method="post" enctype="multipart/form-data">
 	{% csrf_token %}
 	<div class='ui two fields'>
@@ -37,7 +37,7 @@
 	</div>
 
 	<div class='ui field'>
-		<button type="submit" class="ui blue button"><i class='paper plane icon'></i>Send</button>
+		<button type="submit" class="ui blue button right floated"><i class='paper plane icon'></i>Send Result</button>
 	</div>
 </form>
 

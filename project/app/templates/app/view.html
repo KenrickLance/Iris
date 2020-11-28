@@ -1,22 +1,128 @@
 {% extends 'app/app-base.html' %}
 
 {% block content %}
-PATIENTS
-	<ul>
-	{% for patient in patients %}
-		<li>{{ patient }}{{ patient.id }}</li>
-	{% endfor %}
-	</ul>
-	RECORDS
-	<ul>
-	{% for record in records %}
-		<li>{{ record }}{{ record.id }}</li>
-	{% endfor %}
-	</ul>
-	<ul>
-	DOCTORS
-	{% for doctors in doctors %}
-		<li>{{ doctors }}{{ doctors.id }}</li>
-	{% endfor %}
-	</ul>
+
+<h1>View Records</h1>
+<div class='ui segment'>
+  <h2 style="text-align: center;">Patients</h2>
+  <div class="ui fluid icon input">
+    <i class="search icon"></i>
+    <input type="text" id='patients' placeholder="Search...">
+  </div>
+
+  <table class="ui very basic table stackable">
+    <thead>
+      <tr>
+        <th>Last name</th>
+        <th>First name</th>
+        <th>Middle name</th>
+        <th>Contact number</th>
+        <th>Email address</th>
+      </tr>
+    </thead>
+    <tbody id='tbpatients'>
+      {% for patient in patients %}
+        <tr>
+          <td>{{patient.lastname}}</td>
+          <td>{{patient.firstname}}</td>
+          <td>{{patient.middlename}}</td>
+          <td>{{patient.phone}}</td>
+          <td>{{patient.email}}</td>
+        </tr>
+	    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+<div class='ui segment'>
+  <h2 style="text-align: center;">Diagnosis</h2>
+  <div class="ui fluid icon input">
+    <i class="search icon"></i>
+    <input type="text" id='records' placeholder="Search...">
+  </div>
+  <table class="ui very basic table stackable">
+    <thead>
+      <tr>
+        <th>Patient</th>
+        <th>Test</th>
+        <th>Assigned doctor</th>
+        <th>File</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody id='tbrecords'>
+      {% for record in records %}
+        <tr>
+          <td>{{record.patient.lastname}}, {{record.patient.firstname}} {{record.patient.middlename}}</td>
+          <td>{{record.test}}</td>
+          <td>{{record.doctor}}</td>
+          <td><a href='/download?path={{record.file_path}}'>Download File</a></td>
+          <td>{{record.time}}</td>
+         
+        </tr>
+	    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+
+<div class='ui segment'>
+  <h2 style="text-align: center;">Doctors</h2>
+  <div class="ui fluid icon input">
+    <i class="search icon"></i>
+    <input type="text" id='doctors' placeholder="Search...">
+  </div>
+  <table class="ui very basic table stackable">
+    <thead>
+      <tr>
+        <th>Last name</th>
+        <th>First name</th>
+        <th>Middle name</th>
+      </tr>
+    </thead>
+    <tbody id='tbdoctors'>
+      {% for doctor in doctors %}
+        <tr>
+          <td>{{doctor.lastname}}</td>
+          <td>{{doctor.firstname}}</td>
+          <td>{{doctor.middlename}}</td>
+        </tr>
+	    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $("#patients").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#tbpatients tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+
+
+
+    $("#records").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#tbrecords tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+
+
+    $("#doctors").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#tbdoctors tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+
+
+  });
+  </script>
+
+	
 {% endblock %}
