@@ -40,10 +40,10 @@ def login(request):
 			return redirect('/dashboard')
 		else:
 			form = AuthenticationForm(request.POST)
-			return render(request, 'app/login.html', {'form': form})
+			return render(request, 'app/login.html', {'form': form,'title':' - Login'} )
 	else:
 		form = AuthenticationForm()
-		return render(request, 'app/login.html', {'form': form})
+		return render(request, 'app/login.html', {'form': form,'title':' - Login'})
 
 def logout(request):
 	logout_auth(request)
@@ -78,8 +78,8 @@ def send(request):
 			
 			notif_email = f'Hi Mr./Ms. <b>{patient.lastname}</b>! Your result for your <b>{test}</b> is now ready.<br><br>Click <a href="{dl_link}"><b><u>here</u></b></a> to download your password-protected file.<br><br><b>PDF password:</b> {pdf_pword}<br><br><b>Notes:</b> {notes}'
 			print(patient.phone)
-			send_sms(patient.phone,notif_sms,request.user.username)
-			send_email(patient.email,notif_email)
+			#send_sms(patient.phone,notif_sms,request.user.username)
+			#send_email(patient.email,notif_email)
 			return HttpResponseRedirect('/view')
 	else:
 		print(request.user.id)

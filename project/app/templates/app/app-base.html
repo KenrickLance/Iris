@@ -18,7 +18,7 @@
             <div class="ui secondary vertical menu side-bar">
                 <div id="image-div">
                     <img src="{% static '/app/logo_comp.png' %}" />
-                    <p><span>{{user.username}}</p>
+                    <p><b>{{user.username}}</b></p>
                 </div>
     
                 <a class="item page-section" href='/dashboard' id="Dashboard">
@@ -36,7 +36,7 @@
                 <a class="item page-section" href='/view' id="View">
                     <i class="left clipboard icon"></i>View
                 </a>
-                <a class="item">
+                <a class="item" href='/logout'>
                     <i class="left sign-out icon"></i>Logout
                 </a>
             </div>
