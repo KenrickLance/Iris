@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app.apps.AppConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +129,5 @@ MEDIA_URL = '/media/'
 
 LOGIN_URL= '/login'
 LOGIN_REDIRECT_URL = 'dashboard'
+
+ALLOWED_HOSTS = ['*']

@@ -20,6 +20,14 @@ from .forms import AddPatientForm, SendResultsForm
 
 from .functions import send_sms, send_email, generate_pdf_password, encrypt_pdf
 
+from django.contrib.auth.models import User
+
+from rest_framework import viewsets, generics
+from rest_framework.response import Response as RestResponse
+from rest_framework.views import APIView
+from .serializers import PatientSerializer, DoctorSerializer, RecordSerializer, UserSerializer
+
+
 def login(request):
 	if request.user.is_authenticated:
 		return render(request, 'app/dashboard.html')
@@ -85,7 +93,13 @@ def analyze(request):
 
 @login_required
 def view(request):
-	return render(request, 'app/view.html', {'title':' - View Records', 'active':'View','MEDIA_URL':settings.MEDIA_URL})
+	print(request.user.id)
+	doctors = Doctor.objects.filter(user__id=request.user.id)
+	doctor_pks = list(doctors.values_list('id', flat=True).distinct())
+	records = Record.objects.filter(doctor__in=doctor_pks)
+	patient_pks = list(records.values_list('patient__id', flat=True).distinct())
+	patients = Patient.objects.filter(id__in=patient_pks)
+	return render(request, 'app/view.html', {'title':' - View Records', 'active':'View', 'doctors':doctors, 'records':records, 'patients':patients})
 
 @login_required
 def add(request):
@@ -120,4 +134,53 @@ def get_file(request):
 					return response
 	raise Http404
 	
+class api_view_patient(viewsets.ModelViewSet):
+	def get_queryset(self):
+		user_id = self.request.query_params.get('user_id', None)
+		if user_id == None:
+			return Patient.objects.all()
+		doctors = Doctor.objects.filter(user__id=user_id)
+		doctor_pks = list(doctors.values_list('id', flat=True).distinct())
+		records = Record.objects.filter(doctor__in=doctor_pks)
+		patient_pks = list(records.values_list('patient__id', flat=True).distinct())
+		patients = Patient.objects.filter(id__in=patient_pks)
+		return patients
+	serializer_class = PatientSerializer
 
+class api_view_doctor(viewsets.ModelViewSet):
+	def get_queryset(self):
+		user_id = self.request.query_params.get('user_id', None)
+		if user_id == None:
+			return Doctor.objects.all()
+		doctors = Doctor.objects.filter(user__id=user_id)
+		return doctors
+	serializer_class = DoctorSerializer
+
+class api_view_record(viewsets.ModelViewSet):
+	def get_queryset(self):
+		user_id = self.request.query_params.get('user_id', None)
+		if user_id == None:
+			return Record.objects.all()
+		doctors = Doctor.objects.filter(user__id=user_id)
+		doctor_pks = list(doctors.values_list('id', flat=True).distinct())
+		records = Record.objects.filter(doctor__in=doctor_pks)
+		return records
+	serializer_class = RecordSerializer
+
+class api_user(viewsets.ModelViewSet):
+	queryset = User.objects.all()
+	serializer_class = UserSerializer
+
+class api_login(APIView):
+	def post(self, request, format=None):
+		username = request.POST.get('username', None)
+		password = request.POST.get('password', None)
+		user = authenticate(username=username, password=password)
+		if user:
+			authenticated = 1
+			user_id = user.id
+		else:
+			authenticated = 0
+			user_id = None
+		out = {'authenticated': authenticated, 'user_id': user_id}
+		return RestResponse(out)
