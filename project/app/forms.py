@@ -11,8 +11,8 @@ class AddPatientForm(forms.Form):
 class SendResultsForm(forms.Form):
 	patient = forms.ModelChoiceField(label='Patient name', queryset=Patient.objects.all(), required=True, empty_label='Patient name', widget=forms.Select(attrs={'class': 'ui search dropdown'}))
 	doctor = forms.ModelChoiceField(label='Assigned doctor', queryset=Doctor.objects.all(), required=True, empty_label='Assigned doctor', widget=forms.Select(attrs={'class': 'ui search dropdown'}))
-	test = forms.CharField(label='Test type', max_length=20, required=True, widget=forms.TextInput(attrs={'placeholder': 'Test type'}))
-	result = forms.CharField(label='Result', max_length=20, required=True, widget=forms.TextInput(attrs={'placeholder': 'Result'}))
+	test = forms.ChoiceField(label='Test type', choices=[('', 'Test type')] + [(x, x) for x in ['CT Scan', 'Swab Test', 'Blood Test', 'Diagnostic Imagine', 'Clonoscopy', 'MRI Scan', 'Radiography', 'Endoscopy']], required=True, widget=forms.Select(attrs={'class': 'ui search dropdown'}))
+	result = forms.ChoiceField(label='Result', choices=[('', 'Result'), ('Positive', 'Positive'), ('Negative', 'Negative'), ('N/A', 'N/A')], required=True, widget=forms.Select(attrs={'class': 'ui search dropdown'}))
 	file = forms.FileField(label='Upload file')
 	notes =  forms.CharField(label='Notes', widget=forms.Textarea)
 
