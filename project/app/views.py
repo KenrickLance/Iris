@@ -13,5 +13,5 @@ def scan(request):
 def analyze(request):
 	pass
 
-def view(request, patient_id):
+def view(request):
 	pass
