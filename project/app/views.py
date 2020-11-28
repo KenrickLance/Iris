@@ -15,7 +15,7 @@ from .forms import LoginForm
 
 def login(request):
 	if request.user.is_authenticated:
-		return render(request, 'app/home.html')
+		return render(request, 'app/dashboard.html')
 	if request.method == 'POST':
 		username = request.POST['username']
 		password = request.POST['password']
