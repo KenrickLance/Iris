@@ -1,3 +1,4 @@
+{% load static %}
 <html>
     <head>
         <title>Iris{{ title }}</title>
@@ -17,8 +18,8 @@
         <div id="wrapper">
             <div class="ui secondary vertical menu side-bar">
                 <div id="image-div">
-                    <img src="~/Images/logo.png" />
-                    <p><span class="not-bold">AUF-MC</p>
+                    <img src="{% static '/app/logo_comp.png' %}" />
+                    <p><span>AUF-MC</p>
                 </div>
     
                 <a class="item page-section" href='/dashboard' id="Dashboard">
