@@ -1,5 +1,226 @@
 {% extends 'app/app-base.html' %}
 
 {% block content %}
+<h1>Dashboard</h1>
+<div class='ui fluid card'>
+  <div id='chartd'>
 
+  </div>
+</div>
+
+<div class='ui two cards stackable'>
+  <div class="card">
+    <div id='chartb'>
+
+    </div>
+  </div>
+  <div class='card'>
+    <div id='chartc'>
+
+    </div>
+  </div>
+</div>
+
+
+<div class='ui fluid card'>
+  <div id='charta'>
+
+  </div>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+
+<script>
+  $(document).ready(function() {
+    let options = {
+                    series: [{
+                        name: 'Count',
+                        data: [16,13,10,13,6]
+                    }],
+                    chart: {
+                        type: 'bar',
+                        height: 350,
+                        stacked: true,
+                        redrawOnParentSize: false,
+                        toolbar: {
+                            show: true
+                        },
+                        zoom: {
+                            enabled: true
+                        }
+                    },
+                    responsive: [{
+                        breakpoint: 480,
+                        options: {
+                            legend: {
+                                position: 'bottom',
+                                offsetX: -10,
+                                offsetY: 0
+                            }
+                        }
+                    }],
+                    plotOptions: {
+                        bar: {
+                            horizontal: false,
+                        },
+                    },
+                    title: {
+                        text: 'Current Count of Diagnostic Tests per Category',
+                        align: 'left'
+                    },
+                    xaxis: {
+                        categories: ['CT Scan','Blood Test','Swab Test','Clonoscopy','Radiography'],
+                    },
+                    yaxis: {
+                        title: {
+                            text: 'Value'
+                        }
+                    },
+                    legend: {
+                        position: 'right',
+                        offsetY: 40
+                    },
+                    fill: {
+                        opacity: 1
+                    }
+                };
+
+    let chart = new ApexCharts(document.querySelector("#charta"), options);
+    chart.render();
+
+
+
+
+
+    var options2 = {
+          series: [67],
+          chart: {
+          height: 350,
+          type: 'radialBar',
+          offsetY: -10
+        },
+        plotOptions: {
+          radialBar: {
+            startAngle: -135,
+            endAngle: 135,
+            dataLabels: {
+              name: {
+                fontSize: '16px',
+                color: undefined,
+                offsetY: 120
+              },
+              value: {
+                offsetY: 76,
+                fontSize: '22px',
+                color: undefined,
+                formatter: function (val) {
+                  return val + "%";
+                }
+              }
+            }
+          }
+        },
+        fill: {
+          type: 'gradient',
+          gradient: {
+              shade: 'dark',
+              shadeIntensity: 0.15,
+              inverseColors: false,
+              opacityFrom: 1,
+              opacityTo: 1,
+              stops: [0, 50, 65, 91]
+          },
+        },
+        stroke: {
+          dashArray: 4
+        },
+        title: {
+                        text: 'Percentage of COVID-19 Related Diagnosis',
+                        align: 'left'
+                    },
+        labels: ['Positive'],
+        };
+
+        var chart2 = new ApexCharts(document.querySelector("#chartb"), options2);
+        chart2.render();
+
+
+
+
+
+
+
+
+
+
+
+
+
+        var options3 = {
+          series: [24],
+          chart: {
+          height: 350,
+          type: 'radialBar',
+        },
+        plotOptions: {
+          radialBar: {
+            hollow: {
+              size: '70%',
+            }
+          },
+        },
+        title: {
+                        text: 'Percentage of Ongoing Validation ',
+                        align: 'left'
+                    },
+        labels: ['Ongoing'],
+        };
+
+        var chart3 = new ApexCharts(document.querySelector("#chartc"), options3);
+        chart3.render();
+
+
+
+
+
+
+        var options4 = {
+          series: [{
+          name: 'Diagnosis',
+          data: [31, 40, 28, 51, 42, 109, 100]
+        }],
+          chart: {
+          height: 350,
+          type: 'area'
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth'
+        },
+        title: {
+                        text: 'Daily Record Count',
+                        align: 'left'
+                    },
+        xaxis: {
+          type: 'datetime',
+          categories: ["2018-09-19T00:00:00.000Z", "2018-09-20T01:30:00.000Z", "2018-09-21T02:30:00.000Z", "2018-09-22T03:30:00.000Z", "2018-09-23T04:30:00.000Z", "2018-09-24T05:30:00.000Z", "2018-09-25T06:30:00.000Z"]
+        },
+        tooltip: {
+          x: {
+            format: 'dd/MM/yy HH:mm'
+          },
+         
+        },
+        };
+
+        var chart4 = new ApexCharts(document.querySelector("#chartd"), options4);
+        chart4.render();
+      
+  });
+</script>
 {% endblock %}

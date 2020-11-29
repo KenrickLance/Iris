@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
     <link href='https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap' rel='stylesheet'>
-    <link href='https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap' rel='stylesheet'>
-
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     <style>
@@ -39,7 +38,6 @@
 
 
         button {
-            letter-spacing: 2.5px;
             padding: 10px 30px 10px 30px !important;
             width: 100% !important;
         }
@@ -74,6 +72,13 @@
             </form>
         </div>
 
-    </div>
+		</div>
+		
+		<script>
+			$(document).ready(function() {
+				$('#id_username').attr('placeholder','Username');
+				$('#id_password').attr('placeholder','Password');
+			});
+		</script>
 </body>
 </html>
