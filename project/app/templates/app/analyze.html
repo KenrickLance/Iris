@@ -1,28 +1,28 @@
 {% extends 'app/app-base.html' %}
 {% block content %}
 <h1>Analyze CT Scan</h1>
-<form class="ui form segment" action="/add" method="post">
-	{% csrf_token %}
-
-	
-  <div class='field'>
-    <label>Upload CT Scan Image (PNG)</label>
-    <input type="file">
-  </div>
-	
-
-
-	<div class='ui field'>
-		<button type="submit" class="ui teal button right floated"><i class='search icon'></i>Analyze Image</button>
-	</div>
-
-
-</form>
 
 <script>
 	$(document).ready(function(){
 		$('.dropdown').dropdown();
 	});
 </script>
+
+<form class="ui form segment" action="/analyze" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class='field'>
+			{{ form.file.label }}
+			{{ form.file }}
+		</div>
+    <div class='ui field'>
+		<button type="submit" class="ui teal button right floated"><i class='search icon'></i>Analyze Image</button>
+	</div>
+</form>
+
+{% if messages %}
+    {% for message in messages %}
+        <h2>{{ message }}</h2>
+    {% endfor %}
+{% endif %}
 
 {% endblock %}

@@ -1,3 +1,5 @@
+import os
+
 from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -11,12 +13,11 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.conf import settings
-import os
 from django.http import HttpResponse, Http404
-
+from django.core.files.storage import default_storage
 
 from .models import Patient, Doctor, Record
-from .forms import AddPatientForm, SendResultsForm
+from .forms import AddPatientForm, SendResultsForm, AnalyzeCTScanForm
 
 from .functions import send_sms, send_email, generate_pdf_password, encrypt_pdf
 
@@ -27,6 +28,8 @@ from rest_framework.response import Response as RestResponse
 from rest_framework.views import APIView
 from .serializers import PatientSerializer, DoctorSerializer, RecordSerializer, UserSerializer
 
+from.learning import ct_scan_analyze
+from django.contrib import messages
 
 def login(request):
 	if request.user.is_authenticated:
@@ -90,7 +93,21 @@ def send(request):
 
 @login_required
 def analyze(request):
-	return render(request, 'app/analyze.html', {'title':' - Analyze CT Scan', 'active':'Analyze'})
+	if request.method == 'POST':
+		form = AnalyzeCTScanForm(request.POST, request.FILES)
+		if form.is_valid():
+			file = request.FILES['file']
+			file_name = default_storage.save('temp/' + file.name, file)
+			print(file_name)
+			abs_path = f'{settings.BASE_DIR}{settings.MEDIA_URL}temp/{file.name}'
+			result = ct_scan_analyze(abs_path)
+			messages.add_message(request, messages.INFO, result)
+			return HttpResponseRedirect('/analyze')
+
+	else:
+		form = AnalyzeCTScanForm()
+
+	return render(request, 'app/analyze.html', {'title':' - Analyze CT Scan', 'active':'Analyze', 'form':form})
 
 @login_required
 def view(request):

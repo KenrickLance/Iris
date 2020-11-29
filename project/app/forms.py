@@ -22,3 +22,6 @@ class SendResultsForm(forms.Form):
 		super(SendResultsForm, self).__init__(*args, **kwargs)
 		if user_id:
 			self.fields['doctor'].queryset = Doctor.objects.filter(user=user_id)
+
+class AnalyzeCTScanForm(forms.Form):
+	file = forms.FileField(label='Upload file')
