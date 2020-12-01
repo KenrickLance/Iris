@@ -85,8 +85,9 @@ def send(request):
 			#send_email(patient.email,notif_email)
 			return HttpResponseRedirect('/view')
 	else:
-		print(request.user.id)
-		form = SendResultsForm(user_id=request.user.id)
+		test = request.GET.get('test', None)
+		result = request.GET.get('result', None)
+		form = SendResultsForm({'test': test, 'result': result}, user_id=request.user.id)
 
 	print(settings.BASE_DIR)
 	return render(request, 'app/send.html', {'title':' - Send Result', 'active':'Send', 'form':form})
@@ -101,7 +102,8 @@ def analyze(request):
 			print(file_name)
 			abs_path = f'{settings.BASE_DIR}{settings.MEDIA_URL}temp/{file.name}'
 			result = ct_scan_analyze(abs_path)
-			messages.add_message(request, messages.INFO, result)
+			positivity = result.split(' ')[-1]
+			messages.add_message(request, messages.INFO, positivity, extra_tags='result')
 			return HttpResponseRedirect('/analyze')
 
 	else:

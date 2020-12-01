@@ -20,9 +20,26 @@
 </form>
 
 {% if messages %}
-    {% for message in messages %}
-        <h2>{{ message }}</h2>
-    {% endfor %}
+
+	<form class="ui form segment" action="/send", method="get">
+		{% for message in messages %}
+        	<h2>Model Prediction: {{ message }}</h2>
+    	{% endfor %}
+		 <input type="hidden" name="test" value="CT Scan">
+		 <input type="hidden" name="result" value="{% for message in messages %}{{ message }}{% endfor %}">
+		 <p>For patient's post-recommendation...</p>
+		 <ul>
+		 	<li>Stay home except to get medical care</li>
+			<li>Monitor your symptoms. If you have an emergency warning sign (including trouble breathing), seek emergency medical care immediately</li>
+			<li>Stay in a separate room from other household members, if possible</li>
+			<li>Use a separate bathroom, if possible</li>
+			<li>Avoid contact with other members of the household and pets</li>
+			<li>Don’t share personal household items, like cups, towels, and utensils</li>
+			<li>Wear a mask when around other people, if you are able to</li>
+		</ul>
+		<button type="submit" class="ui teal button right floated"><i class='envelope icon'></i>Send Analysis</button>
+	</form>
+    
 {% endif %}
 
 {% endblock %}
