@@ -40,12 +40,12 @@ def send_sms(target_contact,message_content,hospital):
 
 def send_email(target_email,message_content):
 	message = Mail(
-	from_email=('iris.contactonline@gmail.com','Iris'),
+	from_email='kenricklance092@gmail.com',
 	to_emails=target_email,
 	subject='Your results are ready!',
 	html_content=message_content)
 	try:
-		sg = SendGridAPIClient('SG.0btdzfBXQqq4LcdaYxYQxQ.XL2YqBA0SHW-NTlQ4qTv4C9GLdVGLocaUdOzQaUT2Ik')
+		sg = SendGridAPIClient('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')
 		response = sg.send(message)
 		status = response.status_code
 		if status == 202:
@@ -53,7 +53,7 @@ def send_email(target_email,message_content):
 		else:
 			return False
 	except Exception as e:
-		return False
+		print(e.message)
 
 def generate_pdf_password():
 	return secrets.token_hex(2).upper()

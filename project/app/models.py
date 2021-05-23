@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 def make_file_path_name(instance, filename):
 	filename, file_extension = os.path.splitext(filename)
-	return f'patient{instance.patient.id}/{instance.patient.lastname}_{instance.test}_{int(time.time())}{file_extension}'
+	return f'{instance.patient.id}_{instance.patient.lastname}/{instance.patient.lastname}_{instance.test}_{int(time.time())}{file_extension}'
 
 class Patient(models.Model):
 	lastname = models.CharField(max_length=100)

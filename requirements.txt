@@ -3,6 +3,7 @@ djangorestframework
 PyPDF2
 twilio
 sendgrid
+opencv-python
 
 numpy
 scipy
@@ -13,5 +14,6 @@ matplotlib
 opencv-python
 seaborn
 tqdm
-tensorflow
+tensorflow==2.3.0
+keras==2.4.3
 jupyter

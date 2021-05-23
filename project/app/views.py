@@ -72,15 +72,15 @@ def send(request):
 			time = timezone.now()
 			new_record = Record(patient=patient, doctor=doctor, test=test, result=result, file_path=file, notes=notes, time=time)
 			new_record.save()
-			absolute_file_path = f'{settings.BASE_DIR}{settings.MEDIA_URL}{new_record.file_path}'
 
+			absolute_file_path = f'{settings.BASE_DIR}{settings.MEDIA_URL}{new_record.file_path}'
 			pdf_pword = generate_pdf_password()
 			encrypt_pdf(absolute_file_path, pdf_pword)
-			dl_link = f'/download?path=media/{new_record.file_path}'
+
+			dl_link = request.build_absolute_uri(location='download')
+			dl_link += f'?path={new_record.file_path}'
 			notif_sms = f'Hi Mr./Ms. {patient.lastname}! Your result for your {test} is now ready, kindly visit the download link for your convenient access. Thank you!\n\nDownload link: {dl_link}\n\nPDF password: {pdf_pword}\n\nNotes: {notes}'
-			
 			notif_email = f'Hi Mr./Ms. <b>{patient.lastname}</b>! Your result for your <b>{test}</b> is now ready.<br><br>Click <a href="{dl_link}"><b><u>here</u></b></a> to download your password-protected file.<br><br><b>PDF password:</b> {pdf_pword}<br><br><b>Notes:</b> {notes}'
-			print(patient.phone)
 			#send_sms(patient.phone,notif_sms,request.user.username)
 			#send_email(patient.email,notif_email)
 			return HttpResponseRedirect('/view')
@@ -89,7 +89,6 @@ def send(request):
 		result = request.GET.get('result', None)
 		form = SendResultsForm({'test': test, 'result': result}, user_id=request.user.id)
 
-	print(settings.BASE_DIR)
 	return render(request, 'app/send.html', {'title':' - Send Result', 'active':'Send', 'form':form})
 
 @login_required
@@ -99,7 +98,6 @@ def analyze(request):
 		if form.is_valid():
 			file = request.FILES['file']
 			file_name = default_storage.save('temp/' + file.name, file)
-			print(file_name)
 			abs_path = f'{settings.BASE_DIR}{settings.MEDIA_URL}temp/{file.name}'
 			result = ct_scan_analyze(abs_path)
 			positivity = result.split(' ')[-1]
@@ -127,12 +125,10 @@ def add(request):
 		form = AddPatientForm(request.POST)
 		if form.is_valid():
 			lastname = request.POST['lastname']
-			print(lastname)
 			firstname = request.POST['firstname']
 			middlename = request.POST['middlename']
 			phone = request.POST['phone']
 			email = request.POST['email']
-			print(request.POST)
 			new_patient = Patient(lastname=lastname, firstname=firstname, middlename=middlename, phone=phone, email=email)
 			new_patient.save()
 			return HttpResponseRedirect('/send')
@@ -141,17 +137,20 @@ def add(request):
 
 	return render(request, 'app/add.html', {'title':' - Add Patient', 'active':'Add', 'form':form})
 
-def download(request):
+def get_file(request):
 	path = request.GET['path']
 	return render(request, 'app/download.html', {'title':' - Add Patient', 'path':path})
 
-def get_file(request):
-	file_path = request.GET['path']
+def download(request):
+	path = request.GET['path']
+	file_path = os.path.join(settings.MEDIA_ROOT, path)
 	if os.path.exists(file_path):
 			with open(file_path, 'rb') as fh:
 					response = HttpResponse(fh.read(), content_type="application/pdf")
 					response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
 					return response
+	else:
+		print('FILE NOT FOUND')
 	raise Http404
 	
 class api_view_patient(viewsets.ModelViewSet):
